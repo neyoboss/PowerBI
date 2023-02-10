@@ -23,13 +23,27 @@ a {
   html {
     color-scheme: dark;
   }
+
   body {
     color: white;
     background: black;
   }
 }
 
-.report-style-class{
+.report-style-class {
   height: 100vh;
   width: 100%;
+}
+
+.square{
+  height: 41px;
+  width: 100%;
+  background-color: blue;
+  position: absolute;
+}
+
+#over {
+  font-size: 5em;
+  position: absolute;
+  z-index: 2
 }

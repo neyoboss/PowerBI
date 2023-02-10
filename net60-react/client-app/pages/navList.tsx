@@ -13,8 +13,6 @@ import Collapse from '@mui/material/Collapse';
 import AssessmentIcon from "@mui/icons-material/Assessment";
 
 function NavList() {
-	const [data, setData] = useState([]);
-
 	const [reports, setReports] = useState([]);
 	const [groups, setGroups] = useState([]);
 
@@ -40,12 +38,12 @@ function NavList() {
 	}
 
 	return (
-		<div style={{ display: 'flex' }}>
-			<div>
+		<div style={{ display: 'flex'}}>
+			<div style={{marginTop:'3%'}}>
 				{groups.map((group) => {
 					return (
 						<List key={group['id']} sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }} component="nav">
-							<ListItemButton onClick={() =>handleClick(group['id'])}>
+							<ListItemButton onClick={() => handleClick(group['id'])}>
 								<ListItemIcon>
 									<SortIcon />
 								</ListItemIcon>
@@ -70,6 +68,7 @@ function NavList() {
 					)
 				})}
 			</div>
+			<div className='square'></div>
 			{report ? <DisplayReports props={report} /> : <div>Select report</div>}
 		</div >
 	)
@@ -77,22 +76,27 @@ function NavList() {
 
 export function DisplayReports({ props }: { props: any }) {
 	return (
-		<PowerBIEmbed cssClassName='report-style-class'
-			embedConfig={{
-				type: 'report', // Supported types: report, dashboard, tile, visual, and qna.
-				id: `${props['reportId']}`,
-				embedUrl: `${props['embedUrl']}`,
-				tokenType: models.TokenType.Embed,
-				accessToken: `${props['embedToken']}`,
-				settings: {
-					panes: {
-						filters: {
-							expanded: false,
-							visible: false
+		<>
+			<PowerBIEmbed cssClassName='report-style-class'
+				embedConfig={{
+					type: 'report', // Supported types: report, dashboard, tile, visual, and qna.
+					id: `${props['reportId']}`,
+					embedUrl: `${props['embedUrl']}`,
+					tokenType: models.TokenType.Embed,
+					accessToken: `${props['embedToken']}`,
+					settings: {
+						panes: {
+							filters: {
+								expanded: false,
+								visible: false
+							}
+						},
+						bars: {
+							statusBar: { visible: false }
 						}
-					},
-				}
-			}} />
+					}
+				}} />
+		</>
 	)
 }
 
