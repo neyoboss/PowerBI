@@ -13,7 +13,6 @@ import Collapse from '@mui/material/Collapse';
 import AssessmentIcon from "@mui/icons-material/Assessment";
 
 function NavList() {
-	const [reports, setReports] = useState([]);
 	const [groups, setGroups] = useState([]);
 
 	const [report, setReport] = useState();
@@ -38,14 +37,14 @@ function NavList() {
 	}
 
 	return (
-		<div style={{ display: 'flex'}}>
+		<div style={{ display: 'flex', backgroundColor:'#275e9a'}}>
 			<div style={{marginTop:'3%'}}>
 				{groups.map((group) => {
 					return (
-						<List key={group['id']} sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }} component="nav">
-							<ListItemButton onClick={() => handleClick(group['id'])}>
-								<ListItemIcon>
-									<SortIcon />
+						<List key={group['id']} sx={{ width: '100%', maxWidth: 360, bgcolor: '#275e9a' }} component="nav">
+							<ListItemButton style={{color:"#f1f1f1"}} onClick={() => handleClick(group['id'])}>
+								<ListItemIcon >
+									<SortIcon style={{color:"#f1f1f1"}}/>
 								</ListItemIcon>
 								<ListItemText primary={group['name']} />
 								{open[group['id']] ? <ExpandLess /> : <ExpandMore />}
@@ -53,10 +52,10 @@ function NavList() {
 							<Collapse in={open[group['id']]} timeout="auto" unmountOnExit>
 								{group['reportList'].map((rp) => {
 									return (
-										<List key={rp['reportId']} component="div" disablePadding >
+										<List style={{color:'#f1f1f1'}} key={rp['reportId']} component="div" disablePadding >
 											<ListItemButton onClick={() => returnReportProps(rp)} sx={{ pl: 4 }}>
 												<ListItemIcon>
-													<AssessmentIcon />
+													<AssessmentIcon style={{color:"#f1f1f1"}}/>
 												</ListItemIcon>
 												<ListItemText primary={rp['reportName']} />
 											</ListItemButton>
@@ -68,7 +67,7 @@ function NavList() {
 					)
 				})}
 			</div>
-			<div className='square'></div>
+			<div className='square'><img src="/kmwe_logo.png" alt={'KMWE Logo'} className="image"/></div>
 			{report ? <DisplayReports props={report} /> : <div>Select report</div>}
 		</div >
 	)
@@ -88,7 +87,7 @@ export function DisplayReports({ props }: { props: any }) {
 						panes: {
 							filters: {
 								expanded: false,
-								visible: false
+								visible: true
 							}
 						},
 						bars: {

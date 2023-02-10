@@ -38,12 +38,14 @@ a {
 .square{
   height: 41px;
   width: 100%;
-  background-color: blue;
+  background-color: black;
   position: absolute;
 }
 
-#over {
-  font-size: 5em;
-  position: absolute;
-  z-index: 2
+.image{
+  height: 40px;
+  width: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
