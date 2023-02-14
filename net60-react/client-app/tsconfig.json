@@ -15,6 +15,7 @@
     "jsx": "preserve",
     "incremental": true,
     "noImplicitThis":false,
+    "noImplicitAny": false
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/reports.tssx", "components/token.jsx"],
   "exclude": ["node_modules"]

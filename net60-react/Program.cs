@@ -31,6 +31,7 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseCors();
 app.UseHttpsRedirection();
+//app.UseStaticFiles(new StaticFileOptions{RequestPath="net60-react/client-app"});
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
