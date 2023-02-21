@@ -1,7 +1,6 @@
 using Microsoft.PowerBI.Api;
 using Microsoft.PowerBI.Api.Models;
 using Microsoft.Rest;
-using power_bi_overview_dotnet;
 
 namespace power_bi_overview_dotnet.Services
 {

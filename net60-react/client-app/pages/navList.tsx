@@ -18,14 +18,22 @@ function NavList() {
 	const [report, setReport] = useState();
 	const [open, setOpen] = useState(true);
 
+	// useEffect(() => {
+	// 	const fetchGroups = async () => await axios.get(`https://powerbi.corp.kmwe.com:8443/api/groups`).then(res => {
+	// 		console.log(res.data)
+	// 		setGroups(res.data)
+	// 	})
+	// 	fetchGroups().catch(erorr => console.log(erorr));
+	// }, [])
+
 	useEffect(() => {
-		const fetchGroups = async () => await axios.get(`https://powerbi.corp.kmwe.com:8443/api/groups`).then(res => {
+		const fetchGroups = async () => await axios.get(`https://localhost:7295/api/groups`).then(res => {
 			console.log(res.data)
 			setGroups(res.data)
 		})
 		fetchGroups().catch(erorr => console.log(erorr));
 	}, [])
-
+	
 
 	const handleClick = (id) => {
 		setOpen(((prevState: any) => ({ ...prevState, [id]: !prevState[id] })))

@@ -1,7 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.UI;
 using power_bi_overview_dotnet;
 using power_bi_overview_dotnet.Services;
 

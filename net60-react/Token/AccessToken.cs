@@ -1,10 +1,4 @@
 using Microsoft.Identity.Client;
-using Microsoft.PowerBI.Api;
-using Microsoft.PowerBI.Api.Models;
-using Microsoft.Rest;
-using System.Text.Json;
-using Microsoft.Identity.Web;
-
 
 namespace power_bi_overview_dotnet
 {
