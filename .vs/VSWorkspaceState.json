@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\net60-react",
+    "\\net60-react\\client-app",
+    "\\net60-react\\client-app\\pages"
   ],
+  "SelectedNode": "\\net60-react\\net60-react.csproj",
   "PreviewInSolutionExplorer": false
 }

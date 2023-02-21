@@ -7,7 +7,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import SortIcon from '@mui/icons-material/Sort';
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import ExpandLess from "@mui/icons-material/ExpandLess"
-// import { models } from 'powerbi-client';
 import{TokenType} from 'powerbi-models';
 import Collapse from '@mui/material/Collapse';
 import AssessmentIcon from "@mui/icons-material/Assessment";
@@ -20,7 +19,7 @@ function NavList() {
 	const [open, setOpen] = useState(true);
 
 	useEffect(() => {
-		const fetchGroups = async () => await axios.get(`https://localhost:7295/api/groups`).then(res => {
+		const fetchGroups = async () => await axios.get(`https://powerbi.corp.kmwe.com:8443/api/groups`).then(res => {
 			console.log(res.data)
 			setGroups(res.data)
 		})
@@ -101,6 +100,5 @@ export function DisplayReports({ props }: { props: any }) {
 		</>
 	)
 }
-
 
 export default NavList
