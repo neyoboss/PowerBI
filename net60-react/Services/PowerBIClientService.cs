@@ -24,37 +24,43 @@ namespace power_bi_overview_dotnet.Services
 
         public List<GroupModel> GetGroupModels()
         {
-            Groups pbiGroups = client().Groups.GetGroups();
-
-            foreach (var group in pbiGroups.Value)
+            var cli = client();
+            using (cli)
             {
-                GroupModel model = new GroupModel();
-                model.id = group.Id.ToString();
-                model.name = group.Name;
+                Groups pbiGroups = cli.Groups.GetGroups();
 
-                var reports = client().Reports.GetReportsInGroup(new Guid(model.id));
-
-                model.reportList = new List<ReportModel>();
-
-                foreach (var rep in reports.Value)
+                foreach (var group in pbiGroups.Value)
                 {
-                    var generateToken = new GenerateTokenRequest(accessLevel: "view");
-                    var tokenResponse = client().Reports.GenerateTokenInGroup(new Guid(model.id), rep.Id, generateToken);
-                    var embedToken = tokenResponse.Token;
+                    GroupModel model = new GroupModel();
+                    model.id = group.Id.ToString();
+                    model.name = group.Name;
 
-                    var adToken = accessToken.Result().AccessToken.ToString();
+                    var reports = cli.Reports.GetReportsInGroup(new Guid(model.id));
 
-                    ReportModel modelRep = new ReportModel();
-                    modelRep.embedToken = embedToken;
-                    modelRep.embedUrl = rep.EmbedUrl;
-                    modelRep.reportId = rep.Id.ToString();
-                    modelRep.reportName = rep.Name;
+                    model.reportList = new List<ReportModel>();
 
-                    model.reportList.Add(modelRep);
+                    foreach (var rep in reports.Value)
+                    {
+                        var generateToken = new GenerateTokenRequest(accessLevel: "view");
+                        var tokenResponse = client().Reports.GenerateTokenInGroup(new Guid(model.id), rep.Id, generateToken);
+                        var embedToken = tokenResponse.Token;
+
+                        var adToken = accessToken.Result().AccessToken.ToString();
+
+                        ReportModel modelRep = new ReportModel();
+                        modelRep.embedToken = embedToken;
+                        modelRep.embedUrl = rep.EmbedUrl;
+                        modelRep.reportId = rep.Id.ToString();
+                        modelRep.reportName = rep.Name;
+
+                        model.reportList.Add(modelRep);
+                    }
+                    groups.Add(model);
                 }
-                groups.Add(model);
+                return groups;
             }
-            return groups;
+
+
         }
     }
 }
