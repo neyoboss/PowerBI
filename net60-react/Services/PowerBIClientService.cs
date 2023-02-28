@@ -45,8 +45,6 @@ namespace power_bi_overview_dotnet.Services
                         var tokenResponse = client().Reports.GenerateTokenInGroup(new Guid(model.id), rep.Id, generateToken);
                         var embedToken = tokenResponse.Token;
 
-                        var adToken = accessToken.Result().AccessToken.ToString();
-
                         ReportModel modelRep = new ReportModel();
                         modelRep.embedToken = embedToken;
                         modelRep.embedUrl = rep.EmbedUrl;
@@ -61,6 +59,28 @@ namespace power_bi_overview_dotnet.Services
             }
 
 
+        }
+
+        public ReportModel GetReportModelFromGroup(Guid groupId, Guid reportId)
+        {
+            var cli = client();
+            using (cli)
+            {
+
+                var generateToken = new GenerateTokenRequest(accessLevel: "view");
+                var tokenResponse = cli.Reports.GenerateTokenInGroup(groupId, reportId, generateToken);
+                var embedToken = tokenResponse.Token;
+
+                Report rep = cli.Reports.GetReportInGroup(groupId, reportId);
+                
+                ReportModel modelRep = new ReportModel();
+                modelRep.embedToken = embedToken;
+                modelRep.embedUrl = rep.EmbedUrl;
+                modelRep.reportId = rep.Id.ToString();
+                modelRep.reportName = rep.Name;
+
+                return modelRep;
+            }
         }
     }
 }

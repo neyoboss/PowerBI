@@ -15,4 +15,9 @@ public class AccessTokenController : ControllerBase
     public IActionResult GetGroups(){        
         return Ok(powerBIClientService.GetGroupModels());
     }
+
+    [HttpGet("api/workspace/{workspaceId}/report/{reportId}")]
+    public IActionResult GetReportFromGroup(Guid workspaceId, Guid reportId){
+        return Ok(powerBIClientService.GetReportModelFromGroup(workspaceId,reportId));
+    }
 }
