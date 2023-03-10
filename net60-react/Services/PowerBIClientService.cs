@@ -22,43 +22,25 @@ namespace power_bi_overview_dotnet.Services
             return client;
         }
 
-        public List<GroupModel> GetGroupModels()
+        public DashboardModel GetDashboardModelFromGroup(Guid groupId, Guid dashboardId)
         {
             var cli = client();
             using (cli)
             {
-                Groups pbiGroups = cli.Groups.GetGroups();
+                var generateToken = new GenerateTokenRequest(accessLevel: "view");
+                var tokenResponse = cli.Dashboards.GenerateTokenInGroup(groupId, dashboardId, generateToken);
+                var embedToken = tokenResponse.Token;
 
-                foreach (var group in pbiGroups.Value)
-                {
-                    GroupModel model = new GroupModel();
-                    model.id = group.Id.ToString();
-                    model.name = group.Name;
+                Dashboard dashboard = cli.Dashboards.GetDashboardInGroup(groupId, dashboardId);
 
-                    var reports = cli.Reports.GetReportsInGroup(new Guid(model.id));
+                DashboardModel dashboardModel = new DashboardModel();
+                dashboardModel.id = dashboard.Id.ToString();
+                dashboardModel.name = dashboard.DisplayName;
+                dashboardModel.embedUrl = dashboard.EmbedUrl;
+                dashboardModel.embedToken = embedToken;
 
-                    model.reportList = new List<ReportModel>();
-
-                    foreach (var rep in reports.Value)
-                    {
-                        var generateToken = new GenerateTokenRequest(accessLevel: "view");
-                        var tokenResponse = client().Reports.GenerateTokenInGroup(new Guid(model.id), rep.Id, generateToken);
-                        var embedToken = tokenResponse.Token;
-
-                        ReportModel modelRep = new ReportModel();
-                        modelRep.embedToken = embedToken;
-                        modelRep.embedUrl = rep.EmbedUrl;
-                        modelRep.reportId = rep.Id.ToString();
-                        modelRep.reportName = rep.Name;
-
-                        model.reportList.Add(modelRep);
-                    }
-                    groups.Add(model);
-                }
-                return groups;
+                return dashboardModel;
             }
-
-
         }
 
         public ReportModel GetReportModelFromGroup(Guid groupId, Guid reportId)
@@ -66,13 +48,12 @@ namespace power_bi_overview_dotnet.Services
             var cli = client();
             using (cli)
             {
-
                 var generateToken = new GenerateTokenRequest(accessLevel: "view");
                 var tokenResponse = cli.Reports.GenerateTokenInGroup(groupId, reportId, generateToken);
                 var embedToken = tokenResponse.Token;
 
                 Report rep = cli.Reports.GetReportInGroup(groupId, reportId);
-                
+
                 ReportModel modelRep = new ReportModel();
                 modelRep.embedToken = embedToken;
                 modelRep.embedUrl = rep.EmbedUrl;
@@ -80,6 +61,32 @@ namespace power_bi_overview_dotnet.Services
                 modelRep.reportName = rep.Name;
 
                 return modelRep;
+            }
+        }
+
+        public List<ReportModel> GetReportsInWorkspace(Guid groupId)
+        {
+            var cli = client();
+            using (cli)
+            {
+                List<ReportModel> reportModels = new List<ReportModel>();
+                var reports = cli.Reports.GetReportsInGroup(groupId);
+
+                foreach (var rep in reports.Value)
+                {
+                    var generateToken = new GenerateTokenRequest(accessLevel: "view");
+                    var tokenResponse = cli.Reports.GenerateTokenInGroup(groupId, rep.Id, generateToken);
+                    var embedToken = tokenResponse.Token;
+
+                    ReportModel report = new ReportModel();
+                    report.embedToken = embedToken;
+                    report.embedUrl = rep.EmbedUrl;
+                    report.reportId = rep.Id.ToString();
+                    report.reportName = rep.Name;
+
+                    reportModels.Add(report);
+                }
+                return reportModels;
             }
         }
     }

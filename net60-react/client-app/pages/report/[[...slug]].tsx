@@ -12,15 +12,21 @@ export default function Report() {
 
 	const [embedUrl, setEmbedUrl] = useState();
 	const [embedToken, setEmbedToken] = useState();
+
+	const getReport = () => {
+		axios.get(`https://powerbi.corp.kmwe.com:6443/api/workspace/${(router.query.groupId as string)}/report/${router.query.repId as string}`)
+		.then(res => {
+			setEmbedToken(res.data['embedToken'])
+			setEmbedUrl(res.data['embedUrl'])
+		})
+		.catch(erorr => console.log(erorr));
+	}
 	
 	useEffect(() => {
 		if (router.isReady) {
-			axios.get(`https://localhost:7295/api/workspace/${(router.query.workspaceId as string)}/report/${router.query.reportId as string}`)
-				.then(res => {
-					setEmbedToken(res.data['embedToken'])
-					setEmbedUrl(res.data['embedUrl'])
-				})
-				.catch(erorr => console.log(erorr));
+			getReport();
+            const refresh = setInterval(() => getReport(), 60000*5);
+            return () => clearInterval(refresh);
 		}
 	}, [router.isReady])
 
@@ -41,7 +47,7 @@ export default function Report() {
 			<Pbi cssClassName='report-style-class'
 				embedConfig={{
 					type: 'report', // Supported types: report, dashboard, tile, visual, and qna.
-					id: `${router.query.reportId as string}`,
+					id: `${router.query.repId as string}`,
 					embedUrl: `${embedUrl}`,
 					tokenType: TokenType.Embed,
 					accessToken: `${embedToken}`,

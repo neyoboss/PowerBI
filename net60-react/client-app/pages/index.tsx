@@ -1,14 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Container from "@mui/material/Container";
 import { createTheme, Grid, ThemeProvider } from "@mui/material";
-import Link from "next/link";
-import axios from "axios";
+import { useRouter } from "next/router";
 
-function Home() {
+
+export function Home() {
+
+  const router = useRouter();
   const [workspaceId, setWorkspaceId] = useState("");
   const [reportId, setReportId] = useState("");
+  const [dashboardId, setDashboardId] = useState("");
 
   const darkTheme = createTheme({
     palette: {
@@ -24,33 +27,51 @@ function Home() {
 
       <ThemeProvider theme={darkTheme}>
         <Container maxWidth="sm">
-          <Grid className="GridForm" container >
+          <Grid className="GridForm" sx={{ display: 'flex', flexDirection: 'column' }} container >
 
             <div className="formInputs">
               <Grid item mb={3} mt={-1}>
-                <h2 className="textColor">Input Workspace Id & Report Id</h2>
+                <h2 className="textColor">Fill in the fields</h2>
               </Grid>
               <Grid item mb={1} mt={-1}>
                 <TextField value={workspaceId} onChange={(e) => setWorkspaceId(e.target.value)} margin="normal" id="outlined-basic" label="Workspace Id" sx={{ input: { backgroundColor: '#282c34' } }} />
                 <br />
                 <TextField value={reportId} onChange={(e) => setReportId(e.target.value)} margin="normal" id="outlined-basic" label="Report Id" sx={{ input: { backgroundColor: '#282c34' } }} />
+                <br />
+                <TextField value={dashboardId} onChange={(e) => setDashboardId(e.target.value)} margin="normal" id="outlined-basic" label="Dashboard Id" sx={{ input: { backgroundColor: '#282c34' } }} />
               </Grid>
             </div>
 
             <Grid item mb={1}>
-              <Button variant="contained" sx={{ backgroundColor: "#1fa7d4" }}>
-                <Link href={{
-                  pathname: `/report`,
-                  query: {
-                    workspaceId: `${workspaceId}`,
-                    reportId: `${reportId}`
-                  }
-                }}>
-                  <b className="textColor">Submit</b>
-                </Link>
-              </Button>
+              {reportId === "" && dashboardId === "" ? <Button onClick={() => router.push({
+                pathname: '/workspace/',
+                query: { groupId: `${workspaceId}` }
+              })} variant="contained" sx={{ backgroundColor: "#1fa7d4" }}>
+                <b className="textColor">Submit</b>
+              </Button> :
+                <>
+                  {reportId !== "" && dashboardId === "" ? <Button onClick={() => router.push({
+                    pathname: '/report/',
+                    query: {
+                      groupId: `${workspaceId}`,
+                      repId: `${reportId}`
+                    }
+                  })}
+                    variant="contained" sx={{ backgroundColor: "#1fa7d4" }}>
+                    <b className="textColor">Submit</b>
+                  </Button> : <Button onClick={() => router.push({
+                    pathname: '/dashboard/',
+                    query: {
+                      groupId: `${workspaceId}`,
+                      dashId: `${dashboardId}`
+                    }
+                  })}
+                    variant="contained" sx={{ backgroundColor: "#1fa7d4" }}>
+                    <b className="textColor">Submit</b>
+                  </Button>}
+                </>
+              }
             </Grid>
-
           </Grid>
         </Container>
       </ThemeProvider>

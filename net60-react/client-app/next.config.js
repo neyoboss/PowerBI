@@ -4,7 +4,7 @@ const rewrites = () => {
   return [
     {
       source: "/api/:path*",
-      destination: "http://localhost:5075/:path*",
+      destination: "https://powerbi.corp.kmwe.com:6443/:path*",
     },
   ];
 };
@@ -18,12 +18,13 @@ const nextConfig = {
     }
     return config
   },
+
   images: {
     loader: 'akamai',
     path: '/',
   },
   rewrites,
-
+  trailingSlash: true,
   // swcMinify: true,
 }
 
